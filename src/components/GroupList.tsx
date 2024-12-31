@@ -1,46 +1,54 @@
-import { useEffect, useState } from 'react';
-import { Button, HStack, List, ListItem } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Button, HStack, List, ListItem, Spinner, Text } from '@chakra-ui/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { MdOutlineUnfoldLess } from 'react-icons/md';
-import { Todo } from '@/types/TodoType';
-import axios from 'axios';
-
+import useTodos from '@/hooks/useTodos';
 const GroupList = () => {
-	const [todos, setTodos] = useState<Todo[]>([]);
-	const [error, setError] = useState(null);
-	const [visibleCount, setVisibleCount] = useState(10);
+	const { data: todos, error: error, isLoading } = useTodos();
 
-	useEffect(() => {
-		axios
-			.get('https://jsonplaceholder.typicode.com/todos')
-			.then((res) => setTodos(res.data))
-			.catch((error) => setError(error));
-	}, []);
+	const [visibleCount, setVisibleCount] = useState(10);
+	const [completedTodos, setCompletedTodos] = useState<Record<number, boolean>>({});
 
 	const handleShowMore = () => {
-		setVisibleCount((prev) => Math.min(30, prev + 10)); // Show 10 more todos each time
+		if (todos) setVisibleCount((prev) => Math.min(30, prev + 10)); // Max 30 todos
 	};
 
-	const handleShowLes = () => {
-		setVisibleCount((prev) => Math.max(10, prev - 10));
+	const handleShowLess = () => {
+		setVisibleCount((prev) => Math.max(10, prev - 10)); // Min 10 todos
 	};
 
-	if (error) return <p>{error}</p>;
+	const toggleCompletion = (id: number) => {
+		setCompletedTodos((prev) => ({
+			...prev,
+			[id]: !prev[id]
+		}));
+	};
+
+	if (isLoading) return <Spinner />;
+	if (error instanceof Error) return <Text color="red.500">Error: {error.message}</Text>;
 
 	return (
 		<List.Root as="ol">
-			{todos.slice(0, visibleCount).map((todo: Todo) => (
-				<ListItem key={todo.id}>{todo.title}</ListItem>
+			{todos?.slice(0, visibleCount).map((todo) => (
+				<ListItem key={todo.id} display="flex" justifyContent="space-between">
+					<Text textDecoration={completedTodos[todo.id] ? 'line-through' : 'none'} color={completedTodos[todo.id] ? 'green.500' : 'black'}>
+						{todo.id}: {todo.title}
+					</Text>
+					<Checkbox variant={'solid'} marginLeft={4} onChange={() => toggleCompletion(todo.id)}></Checkbox>
+				</ListItem>
 			))}
-			{visibleCount < todos.length && (
-				<HStack mt={2}>
-					<Button bgColor={'blue.400'} onClick={handleShowMore}>
+			<HStack mt={4}>
+				{todos && visibleCount < todos?.length && (
+					<Button bgColor="blue.400" color="white" onClick={handleShowMore}>
 						Show More
 					</Button>
-					<Button bg={'orange.400'} onClick={handleShowLes}>
-						<MdOutlineUnfoldLess color="white" />
+				)}
+				{visibleCount > 10 && (
+					<Button bgColor="orange.400" color="white" onClick={handleShowLess}>
+						<MdOutlineUnfoldLess />
 					</Button>
-				</HStack>
-			)}
+				)}
+			</HStack>
 		</List.Root>
 	);
 };
