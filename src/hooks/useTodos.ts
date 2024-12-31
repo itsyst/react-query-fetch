@@ -10,7 +10,8 @@ const useTodos = () => {
 
     return useQuery<Todo[], Error>({
         queryKey: ['todos'],
-        queryFn: fetchTodos
+        queryFn: fetchTodos,
+        staleTime: 10 * 1000,  // 10s Duration (10 seconds) after which fresh data is fetched
     });
 };
 
