@@ -70,9 +70,11 @@ const Posts = () => {
 
 				{/* Buttons */}
 				<HStack mt={4}>
-					<Button bg={'blue.400'} color={'white'} onClick={handleShowMore}>
-						Show More
-					</Button>
+					{!user && (
+						<Button bg={'blue.400'} color={'white'} onClick={handleShowMore}>
+							Show More
+						</Button>
+					)}
 					{visiblePosts > 10 && posts && posts.length > 10 && (
 						<Button bgColor={'orange.400'} color="white" onClick={handleShowLes}>
 							<MdOutlineUnfoldLess />
