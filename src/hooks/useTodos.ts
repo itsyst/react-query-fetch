@@ -3,10 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const useTodos = () => {
-    const fetchTodos = async (): Promise<Todo[]> => {
-        const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
-        return data;
-    };
+    const fetchTodos = async (): Promise<Todo[]> => await axios
+        .get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
+        .then((response) => response.data);
 
     return useQuery<Todo[], Error>({
         queryKey: ['todos'],
