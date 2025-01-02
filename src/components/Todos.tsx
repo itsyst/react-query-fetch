@@ -25,7 +25,7 @@ const Todos = () => {
 			<Heading as="h1" color={'whiteAlpha.700'}>
 				Todos
 			</Heading>
-			<List.Root as="ol" mt={4}>
+			<List.Root as="ol" mt={2}>
 				{Array.isArray(todos) &&
 					todos.slice(0, pageSize).map((todo: Todo) => (
 						<ListItem key={todo.id} display="flex" justifyContent="space-between">
@@ -35,22 +35,21 @@ const Todos = () => {
 							<Checkbox variant={'solid'} marginLeft={4} onChange={() => toggleCompletion(todo.id)}></Checkbox>
 						</ListItem>
 					))}
-
-				{/* Pagination */}
-				<HStack mt={4} position={'absolute'} bottom={4} left={4}>
-					<Button disabled={page === 1} bgColor="blue.400" color="white" onClick={() => setPage((prev) => prev - 1)}>
-						Previous
-					</Button>
-					<Button
-						disabled={!Array.isArray(todos) || page === todos.length}
-						bgColor="orange.400"
-						color="white"
-						onClick={() => setPage((prev) => prev + 1)}
-					>
-						Next
-					</Button>
-				</HStack>
 			</List.Root>
+			{/* Pagination */}
+			<HStack mt={4}>
+				<Button disabled={page === 1} bgColor="blue.400" color="white" onClick={() => setPage((prev) => prev - 1)}>
+					Previous
+				</Button>
+				<Button
+					disabled={!Array.isArray(todos) || page === todos.length}
+					bgColor="orange.400"
+					color="white"
+					onClick={() => setPage((prev) => prev + 1)}
+				>
+					Next
+				</Button>
+			</HStack>
 		</>
 	);
 };

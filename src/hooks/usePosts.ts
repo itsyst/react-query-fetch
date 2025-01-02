@@ -1,6 +1,6 @@
 import { Post } from "@/types/PostType";
 import { User } from "@/types/UserType";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import axios from "axios";
 
 const usePosts = (user: User | undefined) => {
@@ -11,8 +11,10 @@ const usePosts = (user: User | undefined) => {
     return useQuery<Post[], Error>({
         queryKey: user ? ['users', user?.id, 'posts'] : ['users', 'posts'],
         queryFn: fetchPosts,
-        staleTime: 1 * 60 * 1000 // 1m
-    });
+        staleTime: 1 * 60 * 1000, // 1m
+        keepPreviousData: true,  // Keep previous data when fetching new data
+        placeholderData: keepPreviousData
+    } as UseQueryOptions<Post[], Error>);
 }
 
 export default usePosts;
