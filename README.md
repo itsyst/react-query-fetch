@@ -1,50 +1,29 @@
-# React + TypeScript + Vite
+# React with Chakra UI, Vite, TypeScript, and React Query
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### In this project, we are utilizing:
 
-Currently, two official plugins are available:
+- React: A popular JavaScript library for building user interfaces.
+- Chakra UI: A simple, modular, and accessible component library for React.
+- Vite: A next-generation frontend tool that provides fast development and a smooth build experience.
+- TypeScript: A typed superset of JavaScript that offers static typing to help manage complex applications.
+- React Query: A powerful library for managing server-side data in React applications, offering enhanced caching, paginated fetching, and optimizations, compared to Redux.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Key Features
 
-## Expanding the ESLint configuration
+- Infinite Scroll:
+    - Implemented using React Query to fetch and manage paginated data seamlessly.
+    - Allows users to load more data by scrolling without reloading the entire page.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- State Management:
+    - Leveraging React Query for managing server state rather than Redux, providing a simpler and more optimized approach for fetching, caching, and manipulating data.
 
-- Configure the top-level `parserOptions` property like this:
+- Chakra UI:
+    - Using Chakra UI for responsive, accessible, and themable UI components that enhance the user experience.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- TypeScript:
+    - Helps ensure type safety, reducing common bugs associated with traditional JavaScript and providing better code maintainability.
+ 
+### Layouts
+<a href="https://github.com/itsyst/react-query-fetch">
+ <img src="https://github.com/itsyst/react-query-fetch/blob/dev/src/assets/layout.png" alt="people" border="0"> 
+ </a>
