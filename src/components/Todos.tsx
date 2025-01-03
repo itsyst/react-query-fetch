@@ -34,10 +34,10 @@ const Todos = () => {
 				{Array.isArray(todos?.data) &&
 					todos.data.map((todo: Todo, index) => (
 						<ListItem key={index} display="flex" justifyContent="space-between">
-							<Text textDecoration={completedTodos[todo.id] ? 'line-through' : 'none'} color={completedTodos[todo.id] ? 'green.600' : 'white'}>
+							<Text textDecoration={completedTodos[index] ? 'line-through' : 'none'} color={completedTodos[index] ? 'green.600' : 'white'}>
 								⚆ {todo.title}
 							</Text>
-							<Checkbox variant={'solid'} marginLeft={4} onChange={() => toggleCompletion(todo.id)}></Checkbox>
+							<Checkbox variant={'solid'} marginLeft={4} onChange={() => toggleCompletion(index)}></Checkbox>
 						</ListItem>
 					))}
 			</List.Root>

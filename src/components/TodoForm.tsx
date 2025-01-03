@@ -13,7 +13,7 @@ const TodoForm = () => {
 		error,
 		isError,
 		isPending: isMutating
-	} = useMutation({
+	} = useMutation<Todo, Error, Todo>({
 		mutationFn: (newTodo: Todo) => axios.post<Todo>('https://jsonplaceholder.typicode.com/todos', newTodo).then((res) => res.data),
 		onSuccess: (savedTodo) => {
 			//APPROACH: Invalidating the cache to refetch the data
