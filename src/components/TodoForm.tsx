@@ -23,6 +23,7 @@ const TodoForm = () => {
 				data: [savedTodo, ...(todos?.data || [])],
 				meta: todos?.meta
 			}));
+			ref.current!.value = '';
 		},
 		onError: (error) => {
 			console.error('Failed to add todo:', error);
@@ -44,7 +45,7 @@ const TodoForm = () => {
 					addTodo({
 						id: 0,
 						userId: 1,
-						title: ref.current.value,
+						title: ref.current.value.trim(),
 						completed: false
 					});
 				}
