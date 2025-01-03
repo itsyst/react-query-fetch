@@ -1,5 +1,17 @@
 import { useRef } from 'react';
-import { Button, Fieldset, HStack, Input, Spinner, Text } from '@chakra-ui/react';
+
+interface AddTodoContext {
+	previousTodos: TodosResponse | undefined;
+}
+
+import {
+	Button,
+	Fieldset,
+	HStack,
+	Input,
+	Spinner,
+	Text
+} from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Todo, TodosResponse } from '@/types/TodoType';
@@ -13,21 +25,50 @@ const TodoForm = () => {
 		error,
 		isError,
 		isPending: isMutating
-	} = useMutation<Todo, Error, Todo>({
-		mutationFn: (newTodo: Todo) => axios.post<Todo>('https://jsonplaceholder.typicode.com/todos', newTodo).then((res) => res.data),
-		onSuccess: (savedTodo) => {
+	} = useMutation<Todo, Error, Todo, AddTodoContext>({
+		mutationFn: (newTodo: Todo) =>
+			axios
+				.post<Todo>('https://jsonplaceholder.typicode.com/todosw', newTodo)
+				.then((res) => res.data),
+		onMutate: (newTodo) => {
+			//APPROACH: Storing the previous state before updating the cache
+			const previousTodos = queryClient.getQueryData<TodosResponse>([
+				'todos',
+				{ page: 1, pageSize }
+			]);
+
+			queryClient.setQueryData<TodosResponse>(
+				['todos', { page: 1, pageSize: pageSize }],
+				(todos) => ({
+					data: [newTodo, ...(todos?.data || [])],
+					meta: todos?.meta
+				})
+			);
+			if (ref.current) ref.current.value = '';
+
+			return { previousTodos };
+		},
+		onSuccess: (savedTodo, newTodo) => {
 			//APPROACH: Invalidating the cache to refetch the data
 			// queryClient.invalidateQueries({ queryKey: ['todos'] });
 			//APPROACH: Optimistic Update, updating the cache with the new data directly ("hackish" approach)
-			queryClient.setQueryData<TodosResponse>(['todos', { page: 1, pageSize: pageSize }], (todos) => ({
-				data: [savedTodo, ...(todos?.data || [])],
-				meta: todos?.meta
-			}));
-			ref.current!.value = '';
+			queryClient.setQueryData<TodosResponse>(
+				['todos', { page: 1, pageSize: pageSize }],
+				(todos) => ({
+					data:
+						todos?.data?.map((todo) => (todo === newTodo ? savedTodo : todo)) ||
+						[],
+					meta: todos?.meta
+				})
+			);
 		},
-		onError: (error) => {
-			console.error('Failed to add todo:', error);
-			// Handle error in UI if necessary
+		onError: (error, newTodo, context) => {
+			if (!context) return;
+			//APPROACH: Rollback the cache to the previous state
+			queryClient.setQueryData<TodosResponse>(
+				['todos', { page: 1, pageSize: pageSize }],
+				context.previousTodos
+			);
 		}
 	});
 
@@ -54,7 +95,13 @@ const TodoForm = () => {
 			<Fieldset.Root size="lg" color={'white'} mt={2} mb={4}>
 				<HStack>
 					<Input ref={ref} name="name" />
-					<Button type="submit" alignSelf="flex-start" color={'white'} bg={isMutating ? 'gray.400' : 'blue.400'} disabled={isMutating}>
+					<Button
+						type="submit"
+						alignSelf="flex-start"
+						color={'white'}
+						bg={isMutating ? 'gray.400' : 'blue.400'}
+						disabled={isMutating}
+					>
 						{isMutating ? <Spinner size="sm" /> : 'Add'}
 					</Button>
 				</HStack>
