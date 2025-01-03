@@ -29,7 +29,7 @@ const Posts = () => {
 
 			{/* Select Dropdown */}
 			<MenuRoot>
-				<MenuTrigger asChild bg="gray.700" color="white" _hover={{ bg: 'gray.600' }} mt={2}>
+				<MenuTrigger asChild bg="gray.700" color="white" _hover={{ bg: 'gray.600' }} mt={2} mb={2}>
 					<Button
 						variant="outline"
 						size="sm"
@@ -51,7 +51,7 @@ const Posts = () => {
 			</MenuRoot>
 
 			{/* Posts List */}
-			<List.Root as={'ol'} mt={2}>
+			<List.Root as={'ol'} mt={2.5}>
 				{posts?.slice(0, visiblePosts).map((post) => (
 					<Box key={post.id}>
 						<HStack display={'flex'} justifyContent={'space-between'}>

@@ -13,7 +13,7 @@ function App() {
 			<GridItem bg={'#8D0B41'} padding={4} rowSpan={1} colSpan={{ base: 2, md: 1 }}>
 				<Todos />
 			</GridItem>
-			<GridItem bg={'#3A3960'} padding={4} rowSpan={1} colSpan={2}>
+			<GridItem bg={'#3A3960'} padding={4} rowSpan={1} colSpan={3}>
 				<Comments />
 			</GridItem>
 		</Grid>
