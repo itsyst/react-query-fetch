@@ -1,25 +1,44 @@
-import { useState } from 'react';
-import { Box, Flex, Heading, HStack, Link, List, ListItem, MenuContent, MenuItem, MenuRoot, MenuTrigger, Spinner, Text } from '@chakra-ui/react';
-import { VscFoldDown, VscFoldUp } from 'react-icons/vsc';
-import { MdOutlineUnfoldLess } from 'react-icons/md';
-import { Button } from '@/components/ui/button';
-import { User } from '@/types/UserType';
 import usePosts from '@/hooks/usePosts';
 import useUsers from '@/hooks/useUsers';
+import { User } from '@/types/UserType';
+import {
+	Box,
+	Button,
+	Flex,
+	Heading,
+	HStack,
+	Link,
+	List,
+	ListItem,
+	MenuContent,
+	MenuItem,
+	MenuRoot,
+	MenuTrigger,
+	Spinner,
+	Text
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { MdOutlineUnfoldLess } from 'react-icons/md';
+import { VscFoldDown, VscFoldUp } from 'react-icons/vsc';
 
 const Posts = () => {
 	const [user, setUser] = useState<User>();
 	const { data: posts, error, isLoading } = usePosts(user);
 	const { data: users } = useUsers();
 	const [visiblePosts, setVisiblePosts] = useState(10);
-	const [visibleContent, setVisibleContent] = useState<Record<number, boolean>>({});
+	const [visibleContent, setVisibleContent] = useState<Record<number, boolean>>(
+		{}
+	);
 
-	const handleShowMore = () => setVisiblePosts((prev) => Math.min(25, prev + 10));
+	const handleShowMore = () =>
+		setVisiblePosts((prev) => Math.min(25, prev + 10));
 	const handleShowLes = () => setVisiblePosts((prev) => Math.max(10, prev - 10));
-	const handleVisibleContent = (id: number) => setVisibleContent((prev) => ({ ...prev, [id]: !prev[id] }));
+	const handleVisibleContent = (id: number) =>
+		setVisibleContent((prev) => ({ ...prev, [id]: !prev[id] }));
 
 	if (isLoading) return <Spinner />;
-	if (error instanceof Error) return <Text color="red.500">Error: {error.message}</Text>;
+	if (error instanceof Error)
+		return <Text color="red.500">Error: {error.message}</Text>;
 
 	return (
 		<>
@@ -29,7 +48,14 @@ const Posts = () => {
 
 			{/* Select Dropdown */}
 			<MenuRoot>
-				<MenuTrigger asChild bg="gray.700" color="white" _hover={{ bg: 'gray.600' }} mt={2} mb={2}>
+				<MenuTrigger
+					asChild
+					bg="gray.700"
+					color="white"
+					_hover={{ bg: 'gray.600' }}
+					mt={2}
+					mb={2}
+				>
 					<Button
 						variant="outline"
 						size="sm"
@@ -41,9 +67,19 @@ const Posts = () => {
 						{user?.name || 'Select author'}
 					</Button>
 				</MenuTrigger>
-				<MenuContent bg="white" boxShadow="md" borderRadius="md" position={'absolute'}>
+				<MenuContent
+					bg="white"
+					boxShadow="md"
+					borderRadius="md"
+					position={'absolute'}
+				>
 					{users?.map((user) => (
-						<MenuItem key={user.name} value={user.name} onClick={() => setUser(user)} _hover={{ bg: '#3C3D37', color: 'white' }}>
+						<MenuItem
+							key={user.name}
+							value={user.name}
+							onClick={() => setUser(user)}
+							_hover={{ bg: '#3C3D37', color: 'white' }}
+						>
 							{user.name}
 						</MenuItem>
 					))}
@@ -57,7 +93,11 @@ const Posts = () => {
 						<HStack display={'flex'} justifyContent={'space-between'}>
 							<ListItem color={'white'}>{post.title}</ListItem>
 							<Link onClick={() => handleVisibleContent(post.id)}>
-								{visibleContent[post.id] ? <VscFoldUp color="white" /> : <VscFoldDown color="white" />}
+								{visibleContent[post.id] ? (
+									<VscFoldUp color="white" />
+								) : (
+									<VscFoldDown color="white" />
+								)}
 							</Link>
 						</HStack>
 						{visibleContent[post.id] && (
@@ -70,7 +110,12 @@ const Posts = () => {
 
 				{/* Buttons */}
 				<HStack mt={4}>
-					<Button bg={'blue.400'} color={'white'} disabled={!!user} onClick={handleShowMore}>
+					<Button
+						bg={'blue.400'}
+						color={'white'}
+						disabled={!!user}
+						onClick={handleShowMore}
+					>
 						Show More
 					</Button>
 
