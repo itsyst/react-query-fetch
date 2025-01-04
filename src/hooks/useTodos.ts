@@ -1,7 +1,7 @@
+import {todosResponseClient} from "@/services/todo-service";
 import { TodosResponse } from "@/types/TodoType";
 import { keepPreviousData, useQuery, UseQueryOptions } from "@tanstack/react-query";
-import axios from "axios";
-
+ 
 interface QueryTodos {
     page: number;
     pageSize: number;
@@ -9,11 +9,9 @@ interface QueryTodos {
 
 const useTodos = (query: QueryTodos) => {
     const fetchTodos = async (): Promise<TodosResponse> => {
-        const { data, headers } = await axios.get<TodosResponse>('https://jsonplaceholder.typicode.com/todos', {
-            params: {
-                _start: (query.page - 1) * query.pageSize,
-                _limit: query.pageSize,
-            },
+        const { data, headers } = await todosResponseClient.getAllWithMeta({
+            _start: (query.page - 1) * query.pageSize,
+            _limit: query.pageSize,
         });
 
         // Extract the total count from headers or other means
@@ -33,7 +31,7 @@ const useTodos = (query: QueryTodos) => {
     return useQuery<TodosResponse, Error>({
         queryKey: ['todos', query],
         queryFn: fetchTodos,
-        staleTime: 10 * 1000,  // 10s Duration (10 seconds) after which fresh data is fetched
+        staleTime: 10 * 60 * 1000, // 10 minutes Because the data is not expected to change frequently (fake API)
         keepPreviousData: true,  // Keep previous data when fetching new data
         placeholderData: keepPreviousData
     } as UseQueryOptions<TodosResponse, Error>);
