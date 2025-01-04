@@ -1,9 +1,7 @@
-import ApiClient from "@/services/api-client";
+import {todosResponseClient} from "@/services/todo-service";
 import { TodosResponse } from "@/types/TodoType";
 import { keepPreviousData, useQuery, UseQueryOptions } from "@tanstack/react-query";
-
-const apiClient = new ApiClient<TodosResponse>('/todos');
-
+ 
 interface QueryTodos {
     page: number;
     pageSize: number;
@@ -11,7 +9,7 @@ interface QueryTodos {
 
 const useTodos = (query: QueryTodos) => {
     const fetchTodos = async (): Promise<TodosResponse> => {
-        const { data, headers } = await apiClient.getAllWithMeta({
+        const { data, headers } = await todosResponseClient.getAllWithMeta({
             _start: (query.page - 1) * query.pageSize,
             _limit: query.pageSize,
         });

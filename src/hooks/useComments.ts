@@ -1,9 +1,7 @@
-import ApiClient from "@/services/api-client";
+import commentService from "@/services/comment-service";
 import { Comment } from "@/types/CommentType";
 import { InfiniteData, QueryKey, useInfiniteQuery } from "@tanstack/react-query";
-
-const apiClient = new ApiClient<Comment[]>("/comments");
-
+ 
 interface CommentQuery {
     pageSize: number;
 }
@@ -17,7 +15,7 @@ const useComments = (query: CommentQuery) => {
  
     return useInfiniteQuery<Comment[], Error, InfiniteData<Comment[], unknown>, QueryKey, number>({
         queryKey: ['comments', query],
-        queryFn: () => apiClient.getAll(params),
+        queryFn: () => commentService.getAll(params),
         getNextPageParam: (lastPage, allPages) => lastPage.length > 0 ? allPages.length + 1 : undefined,
         initialPageParam: 1,
         staleTime: 10 * 60 * 1000, // 10 minutes
