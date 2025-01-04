@@ -29,11 +29,11 @@ const useTodos = (query: QueryTodos) => {
         return { data: todoData, meta: { totalPages } };
 
     };
-
+ 
     return useQuery<TodosResponse, Error>({
         queryKey: ['todos', query],
         queryFn: fetchTodos,
-        staleTime: 10 * 1000,  // 10s Duration (10 seconds) after which fresh data is fetched
+        staleTime: 10 * 60 * 1000, // 10 minutes Because the data is not expected to change frequently (fake API)
         keepPreviousData: true,  // Keep previous data when fetching new data
         placeholderData: keepPreviousData
     } as UseQueryOptions<TodosResponse, Error>);

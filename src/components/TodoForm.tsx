@@ -19,13 +19,16 @@ const TodoForm = () => {
 		if (ref.current) ref.current.value = '';
 	});
 	const ref = useRef<HTMLInputElement>(null);
+	// Generate a unique ID for the new todo
+	const uniqueId = Math.floor(Math.random() * 1000000); // Or robust UUID library like `uuid` :)
+	 
 	return (
 		<form
 			onSubmit={(e) => {
 				e.preventDefault();
 				if (ref.current && ref.current.value) {
 					addTodo({
-						id: 0,
+						id: uniqueId,
 						userId: 1,
 						title: ref.current.value.trim(),
 						completed: false

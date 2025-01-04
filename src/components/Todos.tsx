@@ -43,18 +43,25 @@ const Todos = () => {
 			<TodoForm />
 			<List.Root as="ol" mt={2}>
 				{Array.isArray(todos?.data) &&
-					todos.data.map((todo: Todo, index) => (
-						<ListItem key={index} display="flex" justifyContent="space-between">
+					todos.data.map((todo: Todo) => (
+						<ListItem
+							key={todo.id}
+							display="flex"
+							justifyContent="space-between"
+						>
 							<Text
-								textDecoration={completedTodos[index] ? 'line-through' : 'none'}
-								color={completedTodos[index] ? 'green.600' : 'white'}
+								textDecoration={
+									completedTodos[todo.id] ? 'line-through' : 'none'
+								}
+								color={completedTodos[todo.id] ? 'green.600' : 'white'}
 							>
 								⚆ {todo.title}
 							</Text>
 							<Checkbox
 								variant={'solid'}
-								marginLeft={4}
-								onChange={() => toggleCompletion(index)}
+								marginLeft={ 4 }
+								checked={completedTodos[todo.id]}
+								onChange={() => toggleCompletion(todo.id)}
 							></Checkbox>
 						</ListItem>
 					))}
