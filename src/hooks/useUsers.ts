@@ -5,11 +5,9 @@ import ApiClient from "@/services/api-client";
 const apiClient = new ApiClient<User[]>("/users");
 
 const useUsers = () => {
-    const fetchUsers = async (): Promise<User[]> => await apiClient.getAll();
-
     return useQuery<User[], Error>({
         queryKey: ['users'],
-        queryFn: fetchUsers,
+        queryFn: () => apiClient.getAll(),
         staleTime: 10 * 60 * 1000, // 10 minutes
     });
 }

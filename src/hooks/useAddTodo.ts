@@ -11,6 +11,7 @@ interface AddTodoContext {
 const useAddTodo = (onAdd: () => void) => {
     const pageSize = 10;
     const queryClient = useQueryClient();
+    
     return useMutation<Todo, Error, Todo, AddTodoContext>({
         mutationFn: (newTodo: Todo) =>
             apiClient.post(newTodo),
