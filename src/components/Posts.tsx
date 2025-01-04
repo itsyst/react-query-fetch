@@ -87,7 +87,7 @@ const Posts = () => {
 			</MenuRoot>
 
 			{/* Posts List */}
-			<List.Root as={'ol'} mt={2.5}>
+			<List.Root as={'ol'} mt={2}>
 				{posts?.slice(0, visiblePosts).map((post) => (
 					<Box key={post.id}>
 						<HStack display={'flex'} justifyContent={'space-between'}>
