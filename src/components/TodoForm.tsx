@@ -21,7 +21,7 @@ const TodoForm = () => {
 	const ref = useRef<HTMLInputElement>(null);
 	// Generate a unique ID for the new todo
 	const uniqueId = Math.floor(Math.random() * 1000000); // Or robust UUID library like `uuid` :)
-	 
+
 	return (
 		<form
 			onSubmit={(e) => {
@@ -38,7 +38,7 @@ const TodoForm = () => {
 		>
 			<Fieldset.Root size="lg" color={'white'} mt={2} mb={4}>
 				<HStack>
-					<Input ref={ref} name="name" />
+					<Input ref={ref} name="name" disabled={isMutating} />
 					<Button
 						type="submit"
 						alignSelf="flex-start"

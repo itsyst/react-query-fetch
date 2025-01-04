@@ -7,7 +7,7 @@ const apiClient = new ApiClient<User[]>("/users");
 const useUsers = () => {
     return useQuery<User[], Error>({
         queryKey: ['users'],
-        queryFn: () => apiClient.getAll(),
+        queryFn: apiClient.getAll,
         staleTime: 10 * 60 * 1000, // 10 minutes
     });
 }

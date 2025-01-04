@@ -16,24 +16,24 @@ class ApiClient<T> {
         this.config = config;
     }
 
-    async getAllWithMeta(params?: Record<string, unknown>): Promise<AxiosResponse<T, unknown>> {
-        return await axiosInstance
+    getAllWithMeta = (params?: Record<string, unknown>): Promise<AxiosResponse<T, unknown>> =>
+        axiosInstance
             .get<T>(this.endpoint, { ...this.config, params })
             .then((res) => res);
 
-    }
 
-    async getAll(params?: Record<string, unknown>) {
-        return await axiosInstance
+
+    getAll = (params?: Record<string, unknown>): Promise<T> =>
+        axiosInstance
             .get<T>(this.endpoint, { ...this.config, params })
             .then((res) => res.data);
-    }
 
-    async post(data: T): Promise<T> {
-        return axiosInstance
+
+    post = (data: T): Promise<T> =>
+        axiosInstance
             .post<T>(this.endpoint, data)
             .then((res) => res.data);
-    }
+
 }
 
 export default ApiClient;
