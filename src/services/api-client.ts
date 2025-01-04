@@ -17,20 +17,22 @@ class ApiClient<T> {
     }
 
     async getAllWithMeta(params?: Record<string, unknown>): Promise<AxiosResponse<T, unknown>> {
-        const res = await axiosInstance
-            .get<T>(this.endpoint, { ...this.config, params });
-        return res;
+        return await axiosInstance
+            .get<T>(this.endpoint, { ...this.config, params })
+            .then((res) => res);
+
     }
-    
+
     async getAll(params?: Record<string, unknown>) {
-        const res = await axiosInstance
-            .get<T>(this.endpoint, { ...this.config, params });
-        return res.data;
+        return await axiosInstance
+            .get<T>(this.endpoint, { ...this.config, params })
+            .then((res) => res.data);
     }
 
     async post(data: T): Promise<T> {
-        const res = await axiosInstance.post<T>(this.endpoint, data);
-        return res.data;
+        return axiosInstance
+            .post<T>(this.endpoint, data)
+            .then((res) => res.data);
     }
 }
 

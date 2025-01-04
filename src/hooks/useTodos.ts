@@ -1,6 +1,8 @@
+import ApiClient from "@/services/api-client";
 import { TodosResponse } from "@/types/TodoType";
 import { keepPreviousData, useQuery, UseQueryOptions } from "@tanstack/react-query";
-import axios from "axios";
+
+const apiClient = new ApiClient<TodosResponse>('/todos');
 
 interface QueryTodos {
     page: number;
@@ -9,11 +11,9 @@ interface QueryTodos {
 
 const useTodos = (query: QueryTodos) => {
     const fetchTodos = async (): Promise<TodosResponse> => {
-        const { data, headers } = await axios.get<TodosResponse>('https://jsonplaceholder.typicode.com/todos', {
-            params: {
-                _start: (query.page - 1) * query.pageSize,
-                _limit: query.pageSize,
-            },
+        const { data, headers } = await apiClient.getAllWithMeta({
+            _start: (query.page - 1) * query.pageSize,
+            _limit: query.pageSize,
         });
 
         // Extract the total count from headers or other means
@@ -29,7 +29,7 @@ const useTodos = (query: QueryTodos) => {
         return { data: todoData, meta: { totalPages } };
 
     };
- 
+
     return useQuery<TodosResponse, Error>({
         queryKey: ['todos', query],
         queryFn: fetchTodos,
