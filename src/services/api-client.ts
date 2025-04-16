@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://jsonplaceholder.typicode.com",
+    baseURL: "https://jsonplaceholder.cypress.io",
     timeout: 1000,
     headers: {
         "Accept": "application/json", // Default headers
